@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Quiz</title>
+</head>
+<body>
+    <h1>Movie Quiz</h1>
+
+    <!-- Form for User Input -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="language">Language:</label>
+        <input type="text" name="language" id="language" required><br>
+        
+        <label for="actor">Actor:</label>
+        <input type="text" name="actor" id="actor" required><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Display Questions -->
+    {% if questions %}
+        <h2>Quiz Questions</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {% for question in questions %}
+                <p>{{ question.question_text }}</p>
+                {% for option in question.options %}
+                    <input type="radio" name="question_{{ question.id }}" value="{{ forloop.counter0 }}">
+                    {{ option }}<br>
+                {% endfor %}
+            {% endfor %}
+            <button type="submit">Submit Answers</button>
+        </form>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
